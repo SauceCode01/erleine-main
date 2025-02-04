@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+@layer components { 
+  .dum {
+    @apply bg-gray-200 shadow-md shadow-gray-900 p-2 border-1;
+  }
+}
