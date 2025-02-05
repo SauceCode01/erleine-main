@@ -1,6 +1,4 @@
-import React, { useEffect, useRef } from "react";
-
-import { defaultBreakpoints } from "../config";
+import React from "react";
 
 import FeatureBlock from "../components/blocks/auxiliaryBlocks/FeatureBlock";
 import PaddedBlockContainer from "../components/containers/PaddedBlockContainer";

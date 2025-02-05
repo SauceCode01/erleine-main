@@ -1,6 +1,5 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 
-import img1 from "../assets/img1.png";
 import ProductCarouselBlock from "../components/blocks/productBlocks/ProductCarouselBlock";
 import ProductFocusBlock from "../components/blocks/productBlocks/ProductFocusBlock";
 import ExternalLinkBlock from "../components/blocks/auxiliaryBlocks/ExternalLinkBlock";
@@ -8,7 +7,6 @@ import FeatureBlock from "../components/blocks/auxiliaryBlocks/FeatureBlock";
 import MagazineBlock from "../components/blocks/auxiliaryBlocks/MagazineBlock";
 import CategoryCarouselBlock from "../components/blocks/productBlocks/CategoryCarouselBlock";
 import ProductLibraryBlock from "../components/blocks/productBlocks/ProductLibraryBlock";
-import ProductCard from "../components/cards/ProductCard";
 
 
 
