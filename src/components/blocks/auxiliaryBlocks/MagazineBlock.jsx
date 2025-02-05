@@ -1,13 +1,12 @@
 import React from "react";
 
-import { remToPx, getTailwindProperty } from "../../tools/ElementHooks";
-import Carousel from "../carousels/Carousel";
+import { remToPx, getTailwindProperty } from "../../../tools/ElementHooks";
+import Carousel from "../../carousel/Carousel";
 
-import img1 from "../../assets/img4.png";
-import SingleImageCarousel from "../carousels/SingleImageCarousel";
+import img1 from "../../../assets/img4.png";
 
 
-const InfoLanding = ({ className, children }) => {
+const MagazineBlock = ({ className, children }) => {
 	const breakpoints = [
 		{
 			maxWidth: remToPx(getTailwindProperty("--breakpoint-md")),
@@ -49,4 +48,4 @@ const InfoLanding = ({ className, children }) => {
 	);
 };
 
-export default InfoLanding;
+export default MagazineBlock;

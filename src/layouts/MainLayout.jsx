@@ -1,22 +1,20 @@
 import React from "react";
 
 import { Outlet } from "react-router-dom";
-import NavBar from "../components/NavBar";
-import Footer from "../components/landings/Footer";
-import MaxWidthContainer from "../components/MaxWidthContainer";
-
 
 import { backgroundColor } from "../config";
-
+import NavBar from "../components/pageComponents/NavBar";
+import Footer from "../components/pageComponents/Footer";
+import PageContentContainer from "../components/containers/PageContentContainer";
 
 const MainLayout = () => {
 	return (
 		<>
 			<div className={backgroundColor}>
 				<NavBar></NavBar>
-				<MaxWidthContainer>
+				<PageContentContainer>
 					<Outlet></Outlet>
-				</MaxWidthContainer>
+				</PageContentContainer>
 				<Footer></Footer>
 			</div>
 		</>

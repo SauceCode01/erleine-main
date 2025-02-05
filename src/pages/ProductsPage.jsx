@@ -1,46 +1,40 @@
 import React from "react";
-import ProductCarousel from "../components/carousels/ProductCarousel";
-import { sidePadding } from "../config";
-import ProductsLibrary from "../components/library/ProductsLibrary";
-import ProductsYouMayLike from "../components/library/ProductsYouMayLike";
-import FocusProductCard from "../components/carousels/cards/FocusProductCard";
+import PaddedBlockContainer from "../components/containers/PaddedBlockContainer";
+import ProductLibraryBlock from "../components/blocks/productBlocks/ProductLibraryBlock";
+import ProductFocusBlock from "../components/blocks/productBlocks/ProductFocusBlock";
 
 const ProductsPage = () => {
 	return (
 		<>
-			{/* title  */}
-			<div className="flex items-center justify-center p-10">
-				<h1 className="text-5xl font-bold">Products</h1>
-			</div>
+			<PaddedBlockContainer>
+				{/* title  */}
+				<div className="flex items-center justify-center p-10">
+					<h1 className="text-5xl font-bold">Products</h1>
+				</div>
 
-			{/* products in categories  */}
-      
-      <ProductsLibrary></ProductsLibrary>
-			<br></br>
-			<br></br>
+				<ProductLibraryBlock
+					header={{
+						title: "Minimalist Tshirts",
+						subtitles: ["minimalist", "casual", "oversized"],
+					}}
+				></ProductLibraryBlock>
 
-
-      <ProductsYouMayLike></ProductsYouMayLike>
-      
-      <ProductsLibrary></ProductsLibrary>
-			<br></br>
-			<br></br>
-
-      <FocusProductCard></FocusProductCard>
-
-			<div className={`${sidePadding}`}>
-				<ProductCarousel />
-			</div>
-			<br></br>
-			<br></br>
-
-      
-			<div className={`${sidePadding}`}>
-				<ProductCarousel />
-			</div>
-			<br></br>
-			<br></br>
-
+				<ProductFocusBlock></ProductFocusBlock>
+				
+				<ProductLibraryBlock
+					header={{
+						title: "Oversized Tshirts",
+						subtitles: ["minimalist", "casual", "oversized"],
+					}}
+				></ProductLibraryBlock>
+				
+				<ProductLibraryBlock
+					header={{
+						title: "Casual Tshirts",
+						subtitles: ["minimalist", "casual", "oversized"],
+					}}
+				></ProductLibraryBlock>
+			</PaddedBlockContainer>
 		</>
 	);
 };

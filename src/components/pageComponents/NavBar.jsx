@@ -1,8 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import MaxWidthContainer from "./MaxWidthContainer";
-
-import { sidePadding } from "../config";
+import PageContentContainer from "../containers/PageContentContainer";
+import PaddedBlockContainer from "../containers/PaddedBlockContainer";
 
 const NavBar = () => {
 	const linkClass = ({ isActive }) =>
@@ -12,7 +11,8 @@ const NavBar = () => {
 	return (
 		<>
 			<div className="sticky w-full top-0 left-0 bg-white transition-all z-50 shadow-md">
-					<MaxWidthContainer className={`${sidePadding} mx-auto h-20`}>
+				<PageContentContainer>
+					<PaddedBlockContainer>
 						<div className="flex items-center justify-center w-full h-full md:items-stretch md:justify-start md:hellow">
 							{/* left logo  */}
 							<div className="mr-4 flex flex-shrink-0 items-center">
@@ -33,11 +33,15 @@ const NavBar = () => {
 									<NavLink className={linkClass} to="/categories">
 										Categories
 									</NavLink>
+									<NavLink className={linkClass} to="/temp">
+										Temporary Page
+									</NavLink>
 								</div>
 							</div>
 						</div>
-					</MaxWidthContainer>
-				</div>
+					</PaddedBlockContainer>
+				</PageContentContainer>
+			</div>
 		</>
 	);
 };

@@ -10,6 +10,7 @@ import HomePage from "./pages/HomePage";
 import MainLayout from "./layouts/MainLayout";
 import ProductsPage from "./pages/ProductsPage";
 import CategoriesPage from "./pages/CategoriesPage";
+import TemporaryPage from "./pages/TemporaryPage";
 
 const App = () => {
 	const router = createBrowserRouter(
@@ -19,6 +20,7 @@ const App = () => {
 					<Route index element={<HomePage />} />
 					<Route path="/products" element={<ProductsPage />} />
 					<Route path="/categories" element={<CategoriesPage />} />
+					<Route path="/temp" element={<TemporaryPage />} />
 				</Route>
 			</>
 		)

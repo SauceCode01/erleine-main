@@ -30,7 +30,7 @@ const getDefaultNavigationButtons = () => ({
 // optimize center mode
 // add pagination (element that accepts {index} as a prop)
 
-// IMPLEMENT function goToIndex(index) 
+// IMPLEMENT function goToIndex(index)
 
 const Carousel = ({
 	children,
@@ -52,11 +52,12 @@ const Carousel = ({
 	rewindOnInsufficientItem = true,
 	prevOnFirstWillJumpToLast = false,
 	autoplay = {
-		direction:1, 
-		stepSize:1,
-		duration:5000
+		direction: 1,
+		stepSize: 1,
+		duration: 5000,
 	},
 	flinchOnHover = false, // NOT YET IMPLEMENTED
+	autoplayStopOnInteraction = false,
 }) => {
 	// navigation.nextNavigation.addEventListener("click", () => {console.log("next navigation is clicked lol")})
 
@@ -134,13 +135,12 @@ const Carousel = ({
 	}, [index, itemWidth, gapPercent]);
 
 	// listen to buttons
-	const moveTrack =
-		(direction = 1, step = jumpSize) =>
-		() => {
+	const moveTrack = (direction = 1, step = jumpSize) => {
+		return () => {
 			let newIndex = index + direction * step;
 
 			if (newIndex < 0)
-				if (prevOnFirstWillJumpToLast) newIndex = itemCount + newIndex;
+				if (prevOnFirstWillJumpToLast) newIndex = itemCount - 1;
 				else newIndex = 0;
 
 			if (rewindAtEnd) {
@@ -148,23 +148,29 @@ const Carousel = ({
 
 				if (rewindOnInsufficientItem) {
 					// if insufficient cards, rewind to first card
-					if (itemCount - index <= itemContainerCapacity) newIndex = 0;
+					if (itemCount - index <= itemContainerCapacity && direction > 0)
+						newIndex = 0;
 				}
 			}
 
 			setIndex(newIndex);
 		};
+	};
+
+	const [interacted, setInteracted] = useState(false);
 
 	useEffect(() => {
 		if (autoplay) {
 			if (timeoutRef.current) {
 				clearTimeout(timeoutRef.current);
 			}
-			timeoutRef.current = setTimeout(() => {
-				moveTrack(autoplay.direction, autoplay.stepSize)();
-			}, autoplay.duration);
+			if (!(autoplayStopOnInteraction && interacted)) {
+				timeoutRef.current = setTimeout(() => {
+					moveTrack(autoplay.direction, autoplay.stepSize)();
+				}, autoplay.duration);
+			}
 		}
-	}, [index, containerWidth, autoplay]);
+	}, [index, containerWidth, autoplay, interacted]);
 
 	return (
 		<>
@@ -188,12 +194,21 @@ const Carousel = ({
 					>
 						{childArray.map((child, index) => {
 							return (
-								<div style={{ width: `${itemWidth}%` }} className="shrink-0">
-									{cloneElement(child, {
-										className: `${itemsClassName} ${child.props.className}`,
-									})}
-									{/* {child} */}
-								</div>
+								<>
+									{child ? (
+										<div
+											style={{ width: `${itemWidth}%` }}
+											className="shrink-0"
+										>
+											{cloneElement(child, {
+												className: `${itemsClassName} ${child.props.className}`,
+											})}
+											{/* {child} */}
+										</div>
+									) : (
+										""
+									)}
+								</>
 							);
 						})}
 					</div>
@@ -204,7 +219,12 @@ const Carousel = ({
 						{cloneElement(navigation.prevNavigation, {
 							onClick: moveTrack(-1),
 						})}
-						{cloneElement(navigation.nextNavigation, { onClick: moveTrack(1) })}
+						{cloneElement(navigation.nextNavigation, {
+							onClick: () => {
+								setInteracted(true);
+								moveTrack(1)();
+							},
+						})}
 					</>
 				) : (
 					""
