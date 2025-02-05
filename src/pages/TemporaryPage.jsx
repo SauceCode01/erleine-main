@@ -8,7 +8,7 @@ import MagazineBlock from "../components/blocks/auxiliaryBlocks/MagazineBlock";
 import CategoryCarouselBlock from "../components/blocks/productBlocks/CategoryCarouselBlock";
 import ProductLibraryBlock from "../components/blocks/productBlocks/ProductLibraryBlock";
 
-
+ 
 
 const TemporaryPage = () => {
 	return (
