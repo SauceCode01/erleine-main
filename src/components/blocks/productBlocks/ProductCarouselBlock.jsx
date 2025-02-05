@@ -1,16 +1,12 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
-import Carousel from "../../carousel/Carousel";
-import ProductCard from "../../cards/ProductCard";
+import ProductCard from "../../buildingBlocks/ProductCard";
 
-import { defaultBreakpoints } from "../../../config";
-import { getProducts } from "../../../API";
-import LoadMoreCard from "../../cards/LoadMoreCard";
+import { getProductIds } from "../../../API";
 
-
-import { Swiper } from "swiper/react";
-import { NavigationNext, NavigationPrev } from "../../NavigationButtons";
-// Import Swiper styles
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Autoplay } from "swiper/modules";
+import { NavigationNext, NavigationPrev } from "../../buildingBlocks/NavigationButtons";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -24,87 +20,85 @@ import "swiper/css/scrollbar";
  * {Array} productList initial product list. product loader (will use filter) will automatically be called if empty. contains the id's of the products
  * {object} filters used by product loader to filter products to load. if empty, any product will be loaded.
  * {boolean} enableLoadMoreCard true->adds a load more button at the end. uses the filters to load more product
- * @returns null
  */
 const ProductCarouselBlock = ({
-	header = { title: "", subtitles: [] },
-	isLifted = false,
-	productList = [],
-	filters = { categories: [], labels: [], excategories: [], exlabels: [] },
+	title = "",
+	subtitles = [],
+	initialProductIdList = [],
+	filters = {
+		categories: [],
+		labels: [],
+		excludeCategories: [],
+		excludeLabels: [],
+		excludeProductIds: [],
+	},
 	enableLoadMoreCard = false,
-}) => {
-	const breakpoints = [
-		{
-			maxWidth: defaultBreakpoints.bmd,
-			capacity: 5,
-			jumpSize: 3,
-			gap: 20,
-		},
-	];
-
-	const headerTitle = header.title;
-	const headerSubtitles = header.subtitles;
-
-	const [displayProductList, setDisplayProductList] = useState(
-		productList.length > 0
-			? productList
-			: getProducts({ quantity: 10, filters: filters })
+} = {}) => {
+	const [productIdList, setProductIdList] = useState(
+		initialProductIdList.length > 0
+			? initialProductIdList
+			: getProductIds({ quantity: 10, filters: filters })
 	);
-	const loadMore = () => {
-		let newproducts = getProducts({
+
+	const loadMoreProducts = () => {
+		let newProductIds = getProductIds({
 			quantity: 10,
-			filters: filters,
-			loadedProducts: displayProductList,
+			filters: { ...filters, excludeProductIds: [productIdList] },
 		});
-		setDisplayProductList([...displayProductList, ...newproducts]);
+		setProductIdList([...productIdList, ...newProductIds]);
 	};
+
+	let navigationNextRef = useRef();
+	let navigationPrevRef = useRef();
 
 	return (
 		<>
-			<div
-				className={
-					isLifted
-						? "w-full p-5 rounded-2xl bg-white shadow-xl shadow-gray-500"
-						: ""
-				}
-			>
-				{headerTitle ? (
+			<div className="w-full">
+				{title ? (
 					<>
-						<div className="flex items-center">
-							<div className="text-4xl font-bold mr-20">{headerTitle}</div>
-							{headerSubtitles.length > 0 ? (
-								<div className="flex items-center justify-start">
-									{headerSubtitles.map((subtitle, index) => {
-										return <div className="text-[1rem] mr-10">{subtitle}</div>;
+						<div className="flex items-center justify-start gap-20 mb-10">
+							<div className="text-4xl font-bold">{title}</div>
+
+							{subtitles.length > 0 ? (
+								<div className="flex items-center justify-start gap-10">
+									{subtitles.map((subtitle, index) => {
+										return <div className="text-xl">{subtitle}</div>;
 									})}
 								</div>
 							) : (
 								""
 							)}
 						</div>
-
-						<br />
 					</>
 				) : (
 					""
 				)}
 
-				<Carousel breakpoints={breakpoints} autoplayStopOnInteraction={true}>
-					{displayProductList.map((productId, index) => (
-						<ProductCard productId={productId}></ProductCard>
+				<Swiper
+					modules={[Navigation, Autoplay]}
+					slidesPerView={3}
+					spaceBetween={10}
+					autoplay={{ delay: 3000, disableOnInteraction: true }}
+					onInit={(swiper) => {
+						swiper.params.navigation.nextEl = navigationNextRef.current;
+						swiper.params.navigation.prevEl = navigationPrevRef.current;
+						swiper.navigation.init();
+						swiper.navigation.update();
+					}}
+					onReachEnd={(swiper) => {
+						loadMoreProducts();
+					}}
+					className="w-full"
+				>
+					{productIdList.map((productId, index) => (
+						<SwiperSlide className="overflow-visible pb-5">
+							<ProductCard productId={productId}></ProductCard>
+						</SwiperSlide>
 					))}
 
-					{enableLoadMoreCard ? (
-						<div
-							className="w-full h-full flex-col  bg-gray-300 shadow-md hover:shadow-lg shadow-gray-400 overflow-clip cursor-pointer transition-all duration-200 flex items-center justify-center"
-							onClick={loadMore}
-						>
-							See More...
-						</div>
-					) : (
-						""
-					)}
-				</Carousel>
+					<NavigationNext passedRef={navigationNextRef}></NavigationNext>
+					<NavigationPrev passedRef={navigationPrevRef}></NavigationPrev>
+				</Swiper>
 			</div>
 		</>
 	);

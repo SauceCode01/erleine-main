@@ -1,11 +1,12 @@
 import React from "react";
+import { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 
-import { loadProduct } from "../../API";
+import { loadProductData } from "../../API";
 
-const ProductCard = ({ productId }) => {
-	const productData = loadProduct(productId);
+const ProductCard = ({ productId=1 }) => {
+	const [productData, setProductData] = useState(loadProductData(productId));
 
 	const name = productData.name;
 	const categories = productData.categories;
@@ -21,17 +22,17 @@ const ProductCard = ({ productId }) => {
 			? description.substring(0, maxDescriptionLength - 5) + "..."
 			: description;
 
+
   let navigate = useNavigate()
 
-  const goToProductFocusView = () => {
-    console.log("redirect yo")
+  const handleProductCardClick = () => {
     navigate(`/products?productId=${productId}`)
   }
 
 	return (
-		<div className="w-full" onClick={goToProductFocusView}>
-			<div className="aspect-3/5 flex flex-col  bg-white shadow-md hover:shadow-lg shadow-gray-400 overflow-clip cursor-pointer transition-all duration-200">
-				<div className="w-full aspect-square overflow-clip flex items-center justify-center">
+		<div className="w-full" onClick={handleProductCardClick}>
+			<div className="aspect-3/5 flex flex-col  bg-white shadow-md hover:shadow-lg shadow-gray-400 cursor-pointer transition-all duration-200">
+				<div className="w-full aspect-square flex items-center justify-center">
 					<img
 						src={images[0]}
 						className="w-full aspect-square hover:shadow-lg transition-all duration-200"

@@ -15,44 +15,24 @@ const CategoriesPage = () => {
 		<>
 			<PaddedBlockContainer>
 				<ProductCarouselBlock
-					header={{
-						title: "Oversized Tshirts",
-						subtitles: ["minimalist", "casual", "oversized"],
-					}}
+					title="Oversized Tshirts"
+					subtitles={["minimalist", "casual", "oversized"]}
 				></ProductCarouselBlock>
 
 				<ProductCarouselBlock
-					header={{
-						title: "Oversized Tshirts",
-						subtitles: ["minimalist", "casual", "oversized"],
-					}}
+					title="Oversized Tshirts"
+					subtitles={["minimalist", "casual", "oversized"]}
 				></ProductCarouselBlock>
 
 				<ProductCarouselBlock
-					header={{
-						title: "Oversized Tshirts",
-						subtitles: ["minimalist", "casual", "oversized"],
-					}}
+					title="Oversized Tshirts"
+					subtitles={["minimalist", "casual", "oversized"]}
 				></ProductCarouselBlock>
-				<Swiper
-					modules={[Navigation]}
-					slidesPerView={3}
-					navigation
-					spaceBetween={10}
-				>
-					<SwiperSlide>
-						<ProductCard></ProductCard>
-					</SwiperSlide>
-					<SwiperSlide>
-						<ProductCard></ProductCard>
-					</SwiperSlide>
-					<SwiperSlide>
-						<ProductCard></ProductCard>
-					</SwiperSlide>
-					<SwiperSlide>
-						<ProductCard></ProductCard>
-					</SwiperSlide>
-				</Swiper>
+
+				<ProductCarouselBlock
+					title="Oversized Tshirts"
+					subtitles={["minimalist", "casual", "oversized"]}
+				></ProductCarouselBlock>
 			</PaddedBlockContainer>
 		</>
 	);

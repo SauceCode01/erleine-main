@@ -1,26 +1,19 @@
-import React from "react";
+import React, { useRef } from "react";
+import { useState } from "react";
 
-import img1 from "../../../assets/img1.png";
 
-import Carousel from "../../carousel/Carousel";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Autoplay, Pagination } from "swiper/modules";
+import { NavigationNext, NavigationPrev } from "../../buildingBlocks/NavigationButtons";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/scrollbar";
 
-import { defaultBreakpoints } from "../../../config";
+import { loadProductData } from "../../../API";
 
-import { loadProduct } from "../../../API";
-
-const ProductFocusBlock = ({ productId }) => {
-	const carouselBreakpoints = [
-		{
-			maxWidth: defaultBreakpoints.bmd,
-			capacity: 1,
-			jumpSize: 1,
-			gap: 0,
-		},
-	];
-
-	const useProductId = productId ? productId : Math.floor(Math.random() * 10)
-
-	const productData = loadProduct(useProductId);
+const ProductFocusBlock = ({ productId = 1 }) => {
+	const [productData, setProductData] = useState(loadProductData(productId));
 
 	const name = productData.name;
 	const categories = productData.categories;
@@ -30,27 +23,45 @@ const ProductFocusBlock = ({ productId }) => {
 	const links = productData.links;
 	const images = productData.images;
 
+	const navigationNextRef = useRef(null)
+	const navigationPrevRef = useRef(null)
+
 	return (
 		<div className="flex  bg-white shadow-lg shadow-gray-400 overflow-clip rounded-2xl">
 			{/* product image  */}
-			<div className="w-full h-full left-0 top-0  bg-blue-200">
-				<Carousel
-					breakpoints={carouselBreakpoints}
-					centerMode={false}
-					prevOnFirstWillJumpToLast={true}
+			
+			<Swiper
+					modules={[Navigation, Autoplay, Pagination]}
+					slidesPerView={1}
+					rewind={true}
+					pagination={true}
+					autoplay={{ delay: 3000, disableOnInteraction: true }}
+					onInit={(swiper) => {
+						swiper.params.navigation.nextEl = navigationNextRef.current;
+						swiper.params.navigation.prevEl = navigationPrevRef.current;
+						swiper.navigation.init();
+						swiper.navigation.update();
+					}}
+					className="w-full h-full left-0 top-0  bg-blue-200"
 				>
 					{images
 						? images.map((image, index) => (
-								<img  src={image} className="w-full h-full" />
+								<SwiperSlide>
+									<img src={image} className="w-full h-full" />
+								</SwiperSlide>
 						  ))
 						: ""}
-				</Carousel>
-			</div>
+
+					<NavigationNext passedRef={navigationNextRef}></NavigationNext>
+					<NavigationPrev passedRef={navigationPrevRef}></NavigationPrev>
+				</Swiper>
 
 			{/* right side. product details  */}
 			<div className="p-5 flex flex-col justify-start">
 				<div className="flex flex-col justify-start">
-					<p className="pt-2 text-5xl font-bold">{name} {useProductId}</p>
+					<p className="pt-2 text-5xl font-bold">
+						{name} {productId}
+					</p>
 					{categories ? (
 						<ul className="flex justify-start items-center gap-2 mt-1 mb-1">
 							{categories.map((category, index) => (
