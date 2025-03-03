@@ -1,5 +1,5 @@
 
-import { remToPx, getTailwindProperty } from "./tools/ElementHooks"
+import { remToPx, getTailwindProperty } from "./Tools/ElementHooks"
 
 
 // style configs are written in tailwind
